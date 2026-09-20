@@ -902,8 +902,9 @@ elif page == "🔍 Predict Sign":
     input_method = st.radio(
         "How do you want to provide the image?",
         [
+            
+            "📁 Upload File",
             "📷 Open Camera",
-            "📁 Upload File"
         ],
         horizontal=True
     )
