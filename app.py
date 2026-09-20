@@ -15,7 +15,7 @@ st.set_page_config(
 )
 
 # ============================================================
-# MODEL & CLASS CONFIG
+# MODEL
 # ============================================================
 
 MODEL_PATH = "traffic_sign_cnn_model.keras"
@@ -67,451 +67,21 @@ CLASS_NAMES = {
 }
 
 # ============================================================
-# CUSTOM CSS
-# ============================================================
-
-st.markdown("""
-<style>
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
-html, body, [class*="css"] {
-    font-family: 'Inter', sans-serif;
-}
-
-.stApp {
-    background:
-        radial-gradient(
-            circle at 5% 5%,
-            rgba(34, 211, 238, 0.08),
-            transparent 25%
-        ),
-        radial-gradient(
-            circle at 95% 15%,
-            rgba(37, 99, 235, 0.10),
-            transparent 30%
-        ),
-        #07111f;
-    color: #f8fafc;
-}
-
-.block-container {
-    max-width: 1450px;
-    padding-top: 2rem;
-    padding-bottom: 3rem;
-}
-
-/* ============================================================
-   SIDEBAR
-   ============================================================ */
-
-section[data-testid="stSidebar"] {
-    background: linear-gradient(
-        180deg,
-        #06101d 0%,
-        #0a1728 100%
-    );
-    border-right: 1px solid rgba(148,163,184,0.14);
-}
-
-section[data-testid="stSidebar"] .block-container {
-    padding-top: 1.5rem;
-}
-
-/* ============================================================
-   HERO
-   ============================================================ */
-
-.hero {
-    position: relative;
-    overflow: hidden;
-    border-radius: 26px;
-    padding: 42px;
-    margin-bottom: 28px;
-
-    background:
-        linear-gradient(
-            120deg,
-            rgba(8,47,73,0.98),
-            rgba(15,23,42,0.98) 55%,
-            rgba(30,58,138,0.90)
-        );
-
-    border: 1px solid rgba(34,211,238,0.18);
-
-    box-shadow:
-        0 25px 70px rgba(0,0,0,0.28);
-}
-
-.hero:before {
-    content: "";
-    position: absolute;
-    width: 350px;
-    height: 350px;
-    right: -120px;
-    top: -160px;
-    border-radius: 50%;
-    background: rgba(34,211,238,0.08);
-}
-
-.hero-badge {
-    display: inline-block;
-
-    background: rgba(34,211,238,0.10);
-    color: #67e8f9;
-
-    border: 1px solid rgba(34,211,238,0.25);
-
-    padding: 7px 14px;
-    border-radius: 50px;
-
-    font-size: 0.76rem;
-    font-weight: 700;
-    letter-spacing: 0.8px;
-
-    margin-bottom: 17px;
-}
-
-.hero-title {
-    color: white;
-    font-size: 3.2rem;
-    font-weight: 800;
-    line-height: 1.05;
-    margin-bottom: 16px;
-}
-
-.hero-title span {
-    color: #22d3ee;
-}
-
-.hero-description {
-    color: #cbd5e1;
-    max-width: 720px;
-    font-size: 1rem;
-    line-height: 1.75;
-}
-
-.hero-traffic {
-    width: 180px;
-    height: 180px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 50%;
-
-    background: rgba(34,211,238,0.07);
-    border: 1px solid rgba(34,211,238,0.18);
-
-    font-size: 7rem;
-
-    box-shadow:
-        0 0 60px rgba(34,211,238,0.10);
-}
-
-/* ============================================================
-   CARDS
-   ============================================================ */
-
-.card {
-    background:
-        linear-gradient(
-            145deg,
-            rgba(15,23,42,0.97),
-            rgba(15,32,55,0.90)
-        );
-
-    border: 1px solid rgba(148,163,184,0.13);
-    border-radius: 18px;
-
-    padding: 22px;
-
-    box-shadow:
-        0 15px 45px rgba(0,0,0,0.18);
-
-    margin-bottom: 18px;
-}
-
-.kpi-card {
-    background:
-        linear-gradient(
-            145deg,
-            rgba(14,116,144,0.16),
-            rgba(37,99,235,0.12)
-        );
-
-    border: 1px solid rgba(34,211,238,0.18);
-
-    border-radius: 18px;
-
-    padding: 20px;
-
-    min-height: 135px;
-}
-
-.kpi-title {
-    color: #94a3b8;
-    font-size: 0.78rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-}
-
-.kpi-value {
-    color: #f8fafc;
-    font-size: 2rem;
-    font-weight: 800;
-    margin-top: 8px;
-}
-
-.kpi-sub {
-    color: #67e8f9;
-    font-size: 0.78rem;
-    margin-top: 5px;
-}
-
-/* ============================================================
-   SECTION
-   ============================================================ */
-
-.section-title {
-    color: #f8fafc;
-    font-size: 1.4rem;
-    font-weight: 800;
-    margin-top: 10px;
-    margin-bottom: 5px;
-}
-
-.section-subtitle {
-    color: #94a3b8;
-    font-size: 0.88rem;
-    margin-bottom: 18px;
-}
-
-/* ============================================================
-   ARCHITECTURE
-   ============================================================ */
-
-.arch-step {
-    background: rgba(15,23,42,0.82);
-    border: 1px solid rgba(148,163,184,0.12);
-
-    border-radius: 14px;
-
-    padding: 16px;
-
-    text-align: center;
-
-    min-height: 100px;
-}
-
-.arch-icon {
-    font-size: 1.8rem;
-}
-
-.arch-title {
-    color: white;
-    font-weight: 700;
-    margin-top: 7px;
-}
-
-.arch-text {
-    color: #94a3b8;
-    font-size: 0.75rem;
-    margin-top: 3px;
-}
-
-/* ============================================================
-   PREDICTION
-   ============================================================ */
-
-.prediction-box {
-    background:
-        linear-gradient(
-            135deg,
-            rgba(8,47,73,0.96),
-            rgba(15,23,42,0.96)
-        );
-
-    border: 1px solid rgba(34,211,238,0.28);
-
-    border-radius: 22px;
-
-    padding: 28px;
-
-    text-align: center;
-
-    box-shadow:
-        0 20px 50px rgba(0,0,0,0.20);
-}
-
-.prediction-icon {
-    font-size: 3.2rem;
-}
-
-.prediction-label {
-    color: #94a3b8;
-    font-size: 0.78rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-top: 8px;
-}
-
-.prediction-name {
-    color: #67e8f9;
-    font-size: 1.55rem;
-    font-weight: 800;
-    margin: 8px 0;
-}
-
-.confidence {
-    color: #ffffff;
-    font-size: 2.2rem;
-    font-weight: 800;
-}
-
-/* ============================================================
-   STATUS
-   ============================================================ */
-
-.status-online {
-    display: inline-block;
-
-    padding: 7px 13px;
-
-    border-radius: 50px;
-
-    background: rgba(34,197,94,0.10);
-
-    color: #86efac;
-
-    border: 1px solid rgba(34,197,94,0.25);
-
-    font-size: 0.75rem;
-    font-weight: 700;
-}
-
-.status-warning {
-    display: inline-block;
-
-    padding: 7px 13px;
-
-    border-radius: 50px;
-
-    background: rgba(245,158,11,0.10);
-
-    color: #fcd34d;
-
-    border: 1px solid rgba(245,158,11,0.25);
-
-    font-size: 0.75rem;
-    font-weight: 700;
-}
-
-/* ============================================================
-   BUTTONS
-   ============================================================ */
-
-.stButton > button {
-    border-radius: 10px;
-
-    border: 1px solid rgba(34,211,238,0.25);
-
-    background:
-        linear-gradient(
-            135deg,
-            #0e7490,
-            #2563eb
-        );
-
-    color: white;
-
-    font-weight: 700;
-
-    transition: 0.25s ease;
-}
-
-.stButton > button:hover {
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 8px 25px rgba(34,211,238,0.22);
-}
-
-/* ============================================================
-   FILE UPLOADER
-   ============================================================ */
-
-[data-testid="stFileUploader"] {
-    background: rgba(15,23,42,0.65);
-
-    border: 1px dashed rgba(34,211,238,0.50);
-
-    border-radius: 18px;
-
-    padding: 10px;
-}
-
-/* ============================================================
-   FOOTER
-   ============================================================ */
-
-.footer {
-    text-align: center;
-
-    padding: 28px 0 5px;
-
-    color: #64748b;
-
-    font-size: 0.76rem;
-}
-
-.footer strong {
-    color: #22d3ee;
-}
-
-/* ============================================================
-   HIDE STREAMLIT DEFAULT
-   ============================================================ */
-
-#MainMenu {
-    visibility: hidden;
-}
-
-footer {
-    visibility: hidden;
-}
-
-header {
-    background: transparent !important;
-}
-
-</style>
-""", unsafe_allow_html=True)
-
-
-# ============================================================
-# LOAD MODEL
+# MODEL LOAD
 # ============================================================
 
 @st.cache_resource
 def load_model():
-
     return tf.keras.models.load_model(MODEL_PATH)
 
 
 try:
-
     model = load_model()
-
     model_loaded = True
-
-except Exception:
-
+except Exception as e:
     model = None
-
     model_loaded = False
+    model_error = str(e)
 
 
 # ============================================================
@@ -521,11 +91,9 @@ except Exception:
 def preprocess_image(image):
 
     image = image.convert("RGB")
-
     image = image.resize((32, 32))
 
     image_array = np.array(image).astype("float32")
-
     image_array = image_array / 255.0
 
     image_array = np.expand_dims(
@@ -540,29 +108,27 @@ def predict_image(image):
 
     processed = preprocess_image(image)
 
-    predictions = model.predict(
+    prediction = model.predict(
         processed,
         verbose=0
     )[0]
 
-    top_indices = np.argsort(
-        predictions
-    )[::-1][:3]
+    top_indices = np.argsort(prediction)[::-1][:3]
 
     results = []
 
     for index in top_indices:
 
         results.append({
-            "class_id": int(index),
+            "id": int(index),
             "name": CLASS_NAMES[int(index)],
-            "confidence": float(predictions[index])
+            "confidence": float(prediction[index])
         })
 
     return results
 
 
-def get_sign_icon(class_id):
+def sign_icon(class_id):
 
     if class_id in range(0, 9):
         return "🔴"
@@ -589,9 +155,9 @@ def get_sign_icon(class_id):
     return "🚦"
 
 
-def get_recommendation(class_id):
+def driving_guidance(class_id):
 
-    recommendations = {
+    guidance = {
 
         0: "Reduce speed to 20 km/h.",
         1: "Maintain a maximum speed of 30 km/h.",
@@ -604,7 +170,7 @@ def get_recommendation(class_id):
         8: "Maintain a maximum speed of 120 km/h.",
         9: "Do not overtake other vehicles.",
         10: "Heavy vehicles are not allowed to overtake.",
-        11: "Follow the right-of-way rules at the intersection.",
+        11: "Follow the right-of-way rules.",
         12: "You are travelling on a priority road.",
         13: "Slow down and give way.",
         14: "Stop completely before proceeding.",
@@ -638,7 +204,7 @@ def get_recommendation(class_id):
         42: "The heavy-vehicle no-passing restriction has ended."
     }
 
-    return recommendations.get(
+    return guidance.get(
         class_id,
         "Follow the road signs and drive carefully."
     )
@@ -650,77 +216,16 @@ def get_recommendation(class_id):
 
 with st.sidebar:
 
-    # Logo
+    st.title("🚦 TrafficSign AI")
 
-    st.markdown("""
-    <div style="
-        text-align:center;
-        padding:5px 0 20px;
-    ">
+    st.caption("CNN CLASSIFICATION SYSTEM")
 
-        <div style="
-            width:72px;
-            height:72px;
-            margin:auto;
-            border-radius:20px;
+    st.divider()
 
-            display:flex;
-            align-items:center;
-            justify-content:center;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #0891b2,
-                    #2563eb
-                );
-
-            font-size:38px;
-
-            box-shadow:
-                0 10px 30px
-                rgba(34,211,238,0.20);
-        ">
-            🚦
-        </div>
-
-        <h2 style="
-            color:white;
-            margin:12px 0 2px;
-            font-size:1.25rem;
-        ">
-            TrafficSign AI
-        </h2>
-
-        <p style="
-            color:#67e8f9;
-            font-size:0.72rem;
-            margin:0;
-            letter-spacing:1px;
-            font-weight:600;
-        ">
-            CNN CLASSIFICATION SYSTEM
-        </p>
-
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("---")
-
-    st.markdown("""
-    <div style="
-        color:#64748b;
-        font-size:0.70rem;
-        font-weight:700;
-        letter-spacing:1px;
-        margin-bottom:8px;
-    ">
-        NAVIGATION
-    </div>
-    """, unsafe_allow_html=True)
+    st.subheader("Navigation")
 
     page = st.radio(
-        "Navigation",
+        "Select Page",
         [
             "🏠 Dashboard",
             "🔍 Predict Sign",
@@ -731,71 +236,21 @@ with st.sidebar:
         label_visibility="collapsed"
     )
 
-    st.markdown("---")
+    st.divider()
 
     if model_loaded:
-
-        st.markdown("""
-        <div class="status-online">
-            ● MODEL ONLINE
-        </div>
-        """, unsafe_allow_html=True)
-
+        st.success("● MODEL ONLINE")
     else:
+        st.error("● MODEL ERROR")
 
-        st.markdown("""
-        <div class="status-warning">
-            ● MODEL ERROR
-        </div>
-        """, unsafe_allow_html=True)
+    st.divider()
 
-    st.markdown("<br>", unsafe_allow_html=True)
+    st.caption("SYSTEM INFO")
 
-    st.markdown("""
-    <div style="
-        background:rgba(15,23,42,0.70);
-        border:1px solid rgba(148,163,184,0.12);
-        border-radius:15px;
-        padding:15px;
-
-        color:#94a3b8;
-
-        font-size:0.76rem;
-        line-height:1.65;
-    ">
-
-        <div style="
-            color:#67e8f9;
-            font-weight:700;
-            margin-bottom:9px;
-        ">
-            ⚙️ SYSTEM INFO
-        </div>
-
-        <b style="color:#cbd5e1;">
-            Technology
-        </b>
-        <br>
-        TensorFlow • Keras • CNN
-
-        <br><br>
-
-        <b style="color:#cbd5e1;">
-            Input
-        </b>
-        <br>
-        32 × 32 RGB Image
-
-        <br><br>
-
-        <b style="color:#cbd5e1;">
-            Classes
-        </b>
-        <br>
-        43 Traffic Sign Categories
-
-    </div>
-    """, unsafe_allow_html=True)
+    st.write("⚙️ TensorFlow")
+    st.write("🧠 Keras CNN")
+    st.write("🖼️ Input: 32 × 32 RGB")
+    st.write("🚦 Classes: 43")
 
 
 # ============================================================
@@ -804,228 +259,139 @@ with st.sidebar:
 
 if page == "🏠 Dashboard":
 
-    st.markdown("""
-    <div class="hero">
+    st.title("🚦 Traffic Sign Classification AI")
 
-        <div class="hero-badge">
-            🧠 DEEP LEARNING • COMPUTER VISION
-        </div>
-
-        <div style="
-            display:flex;
-            align-items:center;
-            gap:40px;
-        ">
-
-            <div style="flex:1;">
-
-                <div class="hero-title">
-                    Traffic Sign<br>
-                    <span>Classification AI</span>
-                </div>
-
-                <div class="hero-description">
-                    An intelligent image classification system powered by
-                    Convolutional Neural Networks. Upload a traffic sign
-                    image and let the trained CNN identify the sign category
-                    with confidence.
-                </div>
-
-            </div>
-
-            <div class="hero-traffic">
-                🚦
-            </div>
-
-        </div>
-
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown(
-        '<div class="section-title">Project Overview</div>',
-        unsafe_allow_html=True
+    st.subheader(
+        "Deep Learning • Computer Vision • CNN"
     )
 
-    st.markdown(
-        '<div class="section-subtitle">Key information about the trained deep learning system</div>',
-        unsafe_allow_html=True
+    st.info(
+        "An intelligent image classification system that "
+        "recognizes traffic signs using a Convolutional Neural Network."
     )
+
+    st.divider()
+
+    st.header("📊 Project Overview")
 
     c1, c2, c3, c4 = st.columns(4)
 
-    cards = [
-        ("Traffic Classes", "43", "Sign Categories"),
-        ("Training Images", "39,209", "Original Dataset"),
-        ("Test Images", "12,630", "Evaluation Dataset"),
-        ("Test Accuracy", "96.44%", "CNN Performance")
-    ]
+    with c1:
+        st.metric(
+            "Traffic Classes",
+            "43",
+            "Categories"
+        )
 
-    for col, data in zip(
-        [c1, c2, c3, c4],
-        cards
-    ):
+    with c2:
+        st.metric(
+            "Training Images",
+            "39,209",
+            "Images"
+        )
 
-        with col:
+    with c3:
+        st.metric(
+            "Test Images",
+            "12,630",
+            "Images"
+        )
 
-            st.markdown(f"""
-            <div class="kpi-card">
+    with c4:
+        st.metric(
+            "Test Accuracy",
+            "96.44%",
+            "CNN"
+        )
 
-                <div class="kpi-title">
-                    {data[0]}
-                </div>
+    st.divider()
 
-                <div class="kpi-value">
-                    {data[1]}
-                </div>
-
-                <div class="kpi-sub">
-                    {data[2]}
-                </div>
-
-            </div>
-            """, unsafe_allow_html=True)
-
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    st.markdown(
-        '<div class="section-title">CNN Architecture</div>',
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        '<div class="section-subtitle">Image processing pipeline used by the deep learning model</div>',
-        unsafe_allow_html=True
-    )
+    st.header("🧠 CNN Architecture")
 
     a1, a2, a3, a4, a5 = st.columns(5)
 
-    architecture = [
-        ("🖼️", "Input", "32 × 32 × 3"),
-        ("🧩", "Conv2D", "32 Filters"),
-        ("🧠", "Conv2D", "64 + 128 Filters"),
-        ("🔄", "Dense", "128 Neurons"),
-        ("🚦", "Output", "43 Classes")
-    ]
+    with a1:
+        st.info("🖼️ INPUT\n\n32 × 32 × 3")
 
-    for col, data in zip(
-        [a1, a2, a3, a4, a5],
-        architecture
-    ):
+    with a2:
+        st.info("🧩 CONVOLUTION\n\n32 Filters")
 
-        with col:
+    with a3:
+        st.info("🧠 CONVOLUTION\n\n64 + 128 Filters")
 
-            st.markdown(f"""
-            <div class="arch-step">
+    with a4:
+        st.info("🔄 DENSE\n\n128 Neurons")
 
-                <div class="arch-icon">
-                    {data[0]}
-                </div>
+    with a5:
+        st.success("🚦 OUTPUT\n\n43 Classes")
 
-                <div class="arch-title">
-                    {data[1]}
-                </div>
+    st.divider()
 
-                <div class="arch-text">
-                    {data[2]}
-                </div>
-
-            </div>
-            """, unsafe_allow_html=True)
-
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    left, right = st.columns([1.4, 1])
+    left, right = st.columns(2)
 
     with left:
 
-        st.markdown("""
-        <div class="card">
+        st.subheader("🎯 Project Objective")
 
-            <div class="section-title">
-                🎯 Project Objective
-            </div>
+        st.write(
+            "The objective of this project is to automatically "
+            "recognize and classify road traffic signs from images "
+            "using a Convolutional Neural Network."
+        )
 
-            <p style="
-                color:#cbd5e1;
-                line-height:1.8;
-            ">
-                The objective of this project is to automatically
-                recognize and classify road traffic signs from images
-                using a Convolutional Neural Network.
-            </p>
-
-            <p style="
-                color:#94a3b8;
-                line-height:1.8;
-            ">
-                The CNN learns visual patterns such as shape, color,
-                symbols and road-sign structures from labeled images.
-            </p>
-
-        </div>
-        """, unsafe_allow_html=True)
+        st.write(
+            "The CNN learns visual patterns such as shape, color, "
+            "symbols and structures from traffic-sign images."
+        )
 
     with right:
 
-        st.markdown("""
-        <div class="card">
+        st.subheader("⚡ System Status")
 
-            <div class="section-title">
-                ⚡ System Status
-            </div>
+        if model_loaded:
 
-            <br>
+            st.success(
+                "Model is loaded and ready for prediction."
+            )
 
-            <span class="status-online">
-                ● MODEL READY
-            </span>
+        else:
 
-            <p style="
-                color:#94a3b8;
-                font-size:0.84rem;
-                line-height:1.6;
-                margin-top:14px;
-            ">
-                The trained CNN model is ready to classify
-                uploaded traffic-sign images.
-            </p>
+            st.error(
+                "Model could not be loaded."
+            )
 
-        </div>
-        """, unsafe_allow_html=True)
+    st.divider()
+
+    st.subheader("🚀 Quick Start")
+
+    st.write(
+        "Go to **Predict Sign** from the sidebar and upload "
+        "a traffic-sign image."
+    )
 
 
 # ============================================================
-# PREDICT SIGN
+# PREDICTION
 # ============================================================
 
 elif page == "🔍 Predict Sign":
 
-    st.markdown("""
-    <div class="hero">
+    st.title("🔍 Traffic Sign Prediction")
 
-        <div class="hero-badge">
-            🔍 AI IMAGE ANALYSIS
-        </div>
+    st.write(
+        "Upload an image and let the trained CNN identify "
+        "the traffic-sign category."
+    )
 
-        <div class="hero-title">
-            Identify a <span>Traffic Sign</span>
-        </div>
-
-        <div class="hero-description">
-            Upload a traffic-sign image and the trained CNN model
-            will analyze it and return the predicted category,
-            confidence score and top alternative predictions.
-        </div>
-
-    </div>
-    """, unsafe_allow_html=True)
+    st.divider()
 
     if not model_loaded:
 
         st.error(
-            "Model could not be loaded. Please check the model file."
+            "Model could not be loaded."
         )
+
+        st.code(model_error)
 
     else:
 
@@ -1036,39 +402,25 @@ elif page == "🔍 Predict Sign":
 
         with left:
 
-            st.markdown(
-                '<div class="section-title">📤 Upload Image</div>',
-                unsafe_allow_html=True
-            )
-
-            st.markdown(
-                '<div class="section-subtitle">JPG, JPEG and PNG images are supported</div>',
-                unsafe_allow_html=True
-            )
+            st.subheader("📤 Upload Image")
 
             uploaded_file = st.file_uploader(
-                "Upload Traffic Sign",
+                "Choose a traffic sign image",
                 type=[
                     "jpg",
                     "jpeg",
                     "png"
-                ],
-                label_visibility="collapsed"
+                ]
             )
 
-            st.markdown("<br>", unsafe_allow_html=True)
+            st.divider()
 
-            confidence_threshold = st.slider(
+            threshold = st.slider(
                 "Confidence Threshold",
                 min_value=0.50,
                 max_value=0.99,
                 value=0.70,
                 step=0.01
-            )
-
-            st.caption(
-                "Predictions below this confidence level are marked "
-                "as uncertain."
             )
 
         if uploaded_file is not None:
@@ -1081,7 +433,7 @@ elif page == "🔍 Predict Sign":
 
                 st.image(
                     image,
-                    caption="Uploaded Traffic Sign",
+                    caption="Uploaded Image",
                     use_container_width=True
                 )
 
@@ -1091,45 +443,19 @@ elif page == "🔍 Predict Sign":
 
             with right:
 
-                st.markdown(
-                    '<div class="section-title">🤖 AI Prediction</div>',
-                    unsafe_allow_html=True
+                st.subheader("🤖 AI Prediction")
+
+                st.metric(
+                    "Predicted Sign",
+                    best["name"]
                 )
 
-                st.markdown("<br>", unsafe_allow_html=True)
+                st.metric(
+                    "Confidence",
+                    f"{best['confidence'] * 100:.2f}%"
+                )
 
-                st.markdown(f"""
-                <div class="prediction-box">
-
-                    <div class="prediction-icon">
-                        {get_sign_icon(best["class_id"])}
-                    </div>
-
-                    <div class="prediction-label">
-                        Predicted Class
-                    </div>
-
-                    <div class="prediction-name">
-                        {best["name"]}
-                    </div>
-
-                    <div class="confidence">
-                        {best["confidence"] * 100:.2f}%
-                    </div>
-
-                    <div style="
-                        color:#94a3b8;
-                        margin-top:4px;
-                    ">
-                        Confidence Score
-                    </div>
-
-                </div>
-                """, unsafe_allow_html=True)
-
-                st.markdown("<br>", unsafe_allow_html=True)
-
-                if best["confidence"] >= confidence_threshold:
+                if best["confidence"] >= threshold:
 
                     st.success(
                         "✓ High-confidence prediction"
@@ -1138,43 +464,22 @@ elif page == "🔍 Predict Sign":
                 else:
 
                     st.warning(
-                        "⚠ Low-confidence prediction. "
-                        "The image may not match the learned classes."
+                        "⚠ Low-confidence prediction"
                     )
 
-                st.markdown(f"""
-                <div class="card">
+                st.divider()
 
-                    <div class="section-title">
-                        💡 Driving Guidance
-                    </div>
+                st.subheader("💡 Driving Guidance")
 
-                    <p style="
-                        color:#cbd5e1;
-                        line-height:1.7;
-                        margin-top:12px;
-                    ">
-                        {get_recommendation(best["class_id"])}
-                    </p>
+                st.info(
+                    driving_guidance(
+                        best["id"]
+                    )
+                )
 
-                </div>
-                """, unsafe_allow_html=True)
+            st.divider()
 
-            # ====================================================
-            # TOP 3
-            # ====================================================
-
-            st.markdown("<br>", unsafe_allow_html=True)
-
-            st.markdown(
-                '<div class="section-title">📊 Top 3 Predictions</div>',
-                unsafe_allow_html=True
-            )
-
-            st.markdown(
-                '<div class="section-subtitle">Most probable classes returned by the CNN</div>',
-                unsafe_allow_html=True
-            )
+            st.header("📊 Top 3 Predictions")
 
             for rank, result in enumerate(
                 results,
@@ -1182,39 +487,20 @@ elif page == "🔍 Predict Sign":
             ):
 
                 col1, col2, col3 = st.columns(
-                    [0.10, 0.68, 0.22]
+                    [0.10, 0.65, 0.25]
                 )
 
                 with col1:
 
-                    st.markdown(
-                        f"""
-                        <div style="
-                            color:#67e8f9;
-                            font-size:1.3rem;
-                            font-weight:800;
-                            margin-top:10px;
-                        ">
-                            #{rank}
-                        </div>
-                        """,
-                        unsafe_allow_html=True
+                    st.subheader(
+                        f"#{rank}"
                     )
 
                 with col2:
 
-                    st.markdown(
-                        f"""
-                        <div style="
-                            color:#f8fafc;
-                            font-weight:700;
-                            margin-top:8px;
-                        ">
-                            {get_sign_icon(result["class_id"])}
-                            {result["name"]}
-                        </div>
-                        """,
-                        unsafe_allow_html=True
+                    st.write(
+                        f"{sign_icon(result['id'])} "
+                        f"**{result['name']}**"
                     )
 
                     st.progress(
@@ -1223,56 +509,19 @@ elif page == "🔍 Predict Sign":
 
                 with col3:
 
-                    st.markdown(
-                        f"""
-                        <div style="
-                            text-align:right;
-                            color:#67e8f9;
-                            font-weight:800;
-                            font-size:1rem;
-                            margin-top:8px;
-                        ">
-                            {result["confidence"] * 100:.2f}%
-                        </div>
-                        """,
-                        unsafe_allow_html=True
+                    st.write(
+                        f"**{result['confidence'] * 100:.2f}%**"
                     )
 
         else:
 
-            st.markdown("""
-            <div class="card" style="
-                text-align:center;
-                padding:55px 30px;
-            ">
+            st.info(
+                "📷 Upload an image to start prediction."
+            )
 
-                <div style="
-                    font-size:4.5rem;
-                    margin-bottom:15px;
-                ">
-                    📷
-                </div>
-
-                <h2 style="
-                    color:white;
-                    margin-bottom:10px;
-                ">
-                    Upload an Image to Begin
-                </h2>
-
-                <p style="
-                    color:#94a3b8;
-                    max-width:600px;
-                    margin:auto;
-                    line-height:1.7;
-                ">
-                    Select a traffic-sign image from your computer.
-                    The trained CNN will analyze the image and
-                    display the predicted traffic-sign category.
-                </p>
-
-            </div>
-            """, unsafe_allow_html=True)
+            st.write(
+                "Supported formats: JPG, JPEG, PNG"
+            )
 
 
 # ============================================================
@@ -1281,285 +530,112 @@ elif page == "🔍 Predict Sign":
 
 elif page == "📊 Model Performance":
 
-    st.markdown("""
-    <div class="hero">
+    st.title("📊 Model Performance")
 
-        <div class="hero-badge">
-            📊 MODEL EVALUATION
-        </div>
+    st.write(
+        "Performance of the CNN model on the independent test dataset."
+    )
 
-        <div class="hero-title">
-            CNN <span>Performance</span>
-        </div>
+    st.divider()
 
-        <div class="hero-description">
-            Evaluation results obtained from the independent test
-            dataset containing 12,630 unseen traffic-sign images.
-        </div>
+    c1, c2, c3, c4 = st.columns(4)
 
-    </div>
-    """, unsafe_allow_html=True)
+    with c1:
 
-    p1, p2, p3, p4 = st.columns(4)
+        st.metric(
+            "Test Accuracy",
+            "96.44%"
+        )
 
-    metrics = [
-        ("Test Accuracy", "96.44%", "12,180 correct"),
-        ("Test Error", "3.56%", "450 incorrect"),
-        ("Macro F1", "94.41%", "43 classes"),
-        ("Weighted F1", "96.41%", "Test dataset")
-    ]
+    with c2:
 
-    for col, metric in zip(
-        [p1, p2, p3, p4],
-        metrics
-    ):
+        st.metric(
+            "Test Error",
+            "3.56%"
+        )
 
-        with col:
+    with c3:
 
-            st.markdown(f"""
-            <div class="kpi-card">
+        st.metric(
+            "Macro F1",
+            "94.41%"
+        )
 
-                <div class="kpi-title">
-                    {metric[0]}
-                </div>
+    with c4:
 
-                <div class="kpi-value">
-                    {metric[1]}
-                </div>
+        st.metric(
+            "Weighted F1",
+            "96.41%"
+        )
 
-                <div class="kpi-sub">
-                    {metric[2]}
-                </div>
+    st.divider()
 
-            </div>
-            """, unsafe_allow_html=True)
+    st.header("🧠 Model Configuration")
 
-    st.markdown("<br>", unsafe_allow_html=True)
+    config1, config2 = st.columns(2)
 
-    left, right = st.columns(2)
+    with config1:
 
-    with left:
+        st.write("**Architecture:** CNN")
+        st.write("**Input Shape:** 32 × 32 × 3")
+        st.write("**Output Classes:** 43")
+        st.write("**Optimizer:** Adam")
 
-        st.markdown("""
-        <div class="card">
+    with config2:
 
-            <div class="section-title">
-                🧠 Model Configuration
-            </div>
+        st.write(
+            "**Loss:** Sparse Categorical Crossentropy"
+        )
 
-            <table style="
-                width:100%;
-                color:#cbd5e1;
-                border-collapse:collapse;
-                margin-top:15px;
-            ">
+        st.write("**Epochs:** 15")
 
-                <tr>
-                    <td style="padding:10px 0;">
-                        Architecture
-                    </td>
+        st.write("**Batch Size:** 64")
 
-                    <td style="text-align:right;">
-                        CNN
-                    </td>
-                </tr>
+        st.write(
+            "**Activation:** ReLU + Softmax"
+        )
 
-                <tr>
-                    <td style="padding:10px 0;">
-                        Input Shape
-                    </td>
+    st.divider()
 
-                    <td style="text-align:right;">
-                        32 × 32 × 3
-                    </td>
-                </tr>
+    st.header("📈 Test Dataset Results")
 
-                <tr>
-                    <td style="padding:10px 0;">
-                        Output Classes
-                    </td>
+    st.write(
+        "Total Test Images: **12,630**"
+    )
 
-                    <td style="text-align:right;">
-                        43
-                    </td>
-                </tr>
+    st.write(
+        "Correct Predictions: **12,180**"
+    )
 
-                <tr>
-                    <td style="padding:10px 0;">
-                        Optimizer
-                    </td>
+    st.write(
+        "Incorrect Predictions: **450**"
+    )
 
-                    <td style="text-align:right;">
-                        Adam
-                    </td>
-                </tr>
+    st.progress(
+        0.9644,
+        text="Test Accuracy — 96.44%"
+    )
 
-                <tr>
-                    <td style="padding:10px 0;">
-                        Loss Function
-                    </td>
+    st.divider()
 
-                    <td style="text-align:right;">
-                        Sparse Categorical Crossentropy
-                    </td>
-                </tr>
+    st.header("🔬 CNN Processing Pipeline")
 
-                <tr>
-                    <td style="padding:10px 0;">
-                        Epochs
-                    </td>
+    p1, p2, p3, p4, p5 = st.columns(5)
 
-                    <td style="text-align:right;">
-                        15
-                    </td>
-                </tr>
+    with p1:
+        st.info("🖼️ Image\n\nInput")
 
-                <tr>
-                    <td style="padding:10px 0;">
-                        Batch Size
-                    </td>
+    with p2:
+        st.info("🧩 Conv2D\n\nFeature Extraction")
 
-                    <td style="text-align:right;">
-                        64
-                    </td>
-                </tr>
+    with p3:
+        st.info("🔄 Pooling\n\nDownsampling")
 
-            </table>
+    with p4:
+        st.info("🧠 Dense\n\nClassification")
 
-        </div>
-        """, unsafe_allow_html=True)
-
-    with right:
-
-        st.markdown("""
-        <div class="card">
-
-            <div class="section-title">
-                📈 Evaluation Summary
-            </div>
-
-            <p style="
-                color:#94a3b8;
-                line-height:1.8;
-                margin-top:18px;
-            ">
-                The CNN achieved
-                <b style="color:#67e8f9;">
-                    96.44% test accuracy
-                </b>
-                on 12,630 unseen images.
-            </p>
-
-            <p style="
-                color:#94a3b8;
-                line-height:1.8;
-            ">
-                The model correctly classified
-                <b style="color:white;">
-                    12,180 images
-                </b>
-                while
-                <b style="color:white;">
-                    450 images
-                </b>
-                were incorrectly classified.
-            </p>
-
-            <p style="
-                color:#94a3b8;
-                line-height:1.8;
-            ">
-                The macro F1-score was
-                <b style="color:#67e8f9;">
-                    94.41%
-                </b>,
-                showing strong classification performance
-                across the 43 classes.
-            </p>
-
-        </div>
-        """, unsafe_allow_html=True)
-
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    st.markdown("""
-    <div class="card">
-
-        <div class="section-title">
-            🔬 CNN Processing Pipeline
-        </div>
-
-        <div style="
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            gap:10px;
-            margin-top:22px;
-            flex-wrap:wrap;
-        ">
-
-            <div class="arch-step" style="flex:1;">
-                <div class="arch-icon">🖼️</div>
-                <div class="arch-title">Input</div>
-                <div class="arch-text">RGB Image</div>
-            </div>
-
-            <div style="
-                color:#22d3ee;
-                font-size:25px;
-            ">
-                →
-            </div>
-
-            <div class="arch-step" style="flex:1;">
-                <div class="arch-icon">🧩</div>
-                <div class="arch-title">Convolution</div>
-                <div class="arch-text">Feature Extraction</div>
-            </div>
-
-            <div style="
-                color:#22d3ee;
-                font-size:25px;
-            ">
-                →
-            </div>
-
-            <div class="arch-step" style="flex:1;">
-                <div class="arch-icon">🔄</div>
-                <div class="arch-title">Pooling</div>
-                <div class="arch-text">Downsampling</div>
-            </div>
-
-            <div style="
-                color:#22d3ee;
-                font-size:25px;
-            ">
-                →
-            </div>
-
-            <div class="arch-step" style="flex:1;">
-                <div class="arch-icon">🧠</div>
-                <div class="arch-title">Dense</div>
-                <div class="arch-text">Classification</div>
-            </div>
-
-            <div style="
-                color:#22d3ee;
-                font-size:25px;
-            ">
-                →
-            </div>
-
-            <div class="arch-step" style="flex:1;">
-                <div class="arch-icon">🚦</div>
-                <div class="arch-title">Output</div>
-                <div class="arch-text">43 Classes</div>
-            </div>
-
-        </div>
-
-    </div>
-    """, unsafe_allow_html=True)
+    with p5:
+        st.success("🚦 Softmax\n\nPrediction")
 
 
 # ============================================================
@@ -1568,55 +644,44 @@ elif page == "📊 Model Performance":
 
 elif page == "🚦 Sign Classes":
 
-    st.markdown("""
-    <div class="hero">
+    st.title("🚦 Traffic Sign Classes")
 
-        <div class="hero-badge">
-            🚦 CLASS DATABASE
-        </div>
-
-        <div class="hero-title">
-            43 Traffic <span>Sign Classes</span>
-        </div>
-
-        <div class="hero-description">
-            Explore all traffic-sign categories recognized by
-            the trained CNN model.
-        </div>
-
-    </div>
-    """, unsafe_allow_html=True)
-
-    search = st.text_input(
-        "🔎 Search Traffic Sign",
-        placeholder="Example: speed, stop, road, curve..."
+    st.write(
+        "The CNN model recognizes 43 traffic-sign categories."
     )
 
-    filtered = []
+    search = st.text_input(
+        "🔎 Search class",
+        placeholder="Try: speed, road, stop, curve..."
+    )
+
+    st.divider()
+
+    filtered_classes = []
 
     for class_id, name in CLASS_NAMES.items():
 
         if search.lower() in name.lower():
 
-            filtered.append(
+            filtered_classes.append(
                 (class_id, name)
             )
 
-    if not filtered:
+    if not filtered_classes:
 
         st.warning(
-            "No matching traffic-sign class found."
+            "No matching class found."
         )
 
     else:
 
         for start in range(
             0,
-            len(filtered),
+            len(filtered_classes),
             3
         ):
 
-            row = filtered[
+            row = filtered_classes[
                 start:start + 3
             ]
 
@@ -1631,243 +696,96 @@ elif page == "🚦 Sign Classes":
 
                 with col:
 
-                    st.markdown(f"""
-                    <div class="card">
-
-                        <div style="
-                            font-size:2rem;
-                        ">
-                            {get_sign_icon(class_id)}
-                        </div>
-
-                        <div style="
-                            color:#67e8f9;
-                            font-size:0.72rem;
-                            font-weight:700;
-                            margin-top:8px;
-                        ">
-                            CLASS {class_id}
-                        </div>
-
-                        <div style="
-                            color:white;
-                            font-weight:700;
-                            margin-top:7px;
-                            line-height:1.4;
-                        ">
-                            {name}
-                        </div>
-
-                    </div>
-                    """, unsafe_allow_html=True)
+                    st.info(
+                        f"{sign_icon(class_id)} "
+                        f"**Class {class_id}**\n\n"
+                        f"{name}"
+                    )
 
 
 # ============================================================
-# ABOUT PROJECT
+# ABOUT
 # ============================================================
 
 elif page == "ℹ️ About Project":
 
-    st.markdown("""
-    <div class="hero">
+    st.title("ℹ️ About TrafficSign AI")
 
-        <div class="hero-badge">
-            🎓 FINAL YEAR DEEP LEARNING PROJECT
-        </div>
+    st.subheader(
+        "Final Year Deep Learning Project"
+    )
 
-        <div class="hero-title">
-            About <span>TrafficSign AI</span>
-        </div>
+    st.divider()
 
-        <div class="hero-description">
-            A computer vision project demonstrating the practical
-            application of Convolutional Neural Networks for
-            automated traffic-sign classification.
-        </div>
+    st.header("🎯 Problem Statement")
 
-    </div>
-    """, unsafe_allow_html=True)
+    st.write(
+        "Traffic signs provide important information to drivers "
+        "and intelligent transportation systems. Automatic "
+        "recognition of these signs can help computer vision "
+        "systems understand road environments."
+    )
 
-    c1, c2 = st.columns(2)
+    st.divider()
 
-    with c1:
+    st.header("💡 Proposed Solution")
 
-        st.markdown("""
-        <div class="card">
+    st.write(
+        "This project uses a Convolutional Neural Network to "
+        "classify traffic-sign images into 43 different categories."
+    )
 
-            <div class="section-title">
-                🎯 Problem Statement
-            </div>
+    st.write(
+        "The input image is resized to 32 × 32 pixels and normalized "
+        "before being passed through the trained CNN."
+    )
 
-            <p style="
-                color:#cbd5e1;
-                line-height:1.8;
-            ">
-                Traffic signs provide important information to
-                drivers and intelligent transportation systems.
-                Automatic recognition can help computer vision
-                systems understand road environments.
-            </p>
+    st.divider()
 
-            <p style="
-                color:#94a3b8;
-                line-height:1.8;
-            ">
-                This project uses deep learning to recognize
-                traffic signs from images.
-            </p>
+    st.header("🛠️ Technologies")
 
-        </div>
-        """, unsafe_allow_html=True)
+    tech1, tech2, tech3, tech4 = st.columns(4)
 
-    with c2:
+    with tech1:
+        st.success("🐍 Python")
 
-        st.markdown("""
-        <div class="card">
+    with tech2:
+        st.success("🧠 TensorFlow")
 
-            <div class="section-title">
-                💡 Proposed Solution
-            </div>
+    with tech3:
+        st.success("🔬 Keras")
 
-            <p style="
-                color:#cbd5e1;
-                line-height:1.8;
-            ">
-                A CNN model is trained using labeled traffic-sign
-                images. During prediction, the uploaded image is
-                resized, normalized and passed through the network.
-            </p>
+    with tech4:
+        st.success("🌐 Streamlit")
 
-            <p style="
-                color:#94a3b8;
-                line-height:1.8;
-            ">
-                The final softmax layer produces probabilities
-                for all 43 learned traffic-sign categories.
-            </p>
+    st.divider()
 
-        </div>
-        """, unsafe_allow_html=True)
+    st.header("🚀 Project Workflow")
 
-    st.markdown("<br>", unsafe_allow_html=True)
+    st.write("1️⃣ Dataset Collection")
+    st.write("2️⃣ Image Preprocessing")
+    st.write("3️⃣ Train / Validation Split")
+    st.write("4️⃣ CNN Model Training")
+    st.write("5️⃣ Model Evaluation")
+    st.write("6️⃣ Streamlit Deployment")
 
-    st.markdown("""
-    <div class="card">
+    st.divider()
 
-        <div class="section-title">
-            🛠️ Technologies Used
-        </div>
+    st.header("📌 Project Summary")
 
-        <div style="
-            display:flex;
-            gap:10px;
-            flex-wrap:wrap;
-            margin-top:18px;
-        ">
-
-            <span class="status-online">
-                Python
-            </span>
-
-            <span class="status-online">
-                TensorFlow
-            </span>
-
-            <span class="status-online">
-                Keras
-            </span>
-
-            <span class="status-online">
-                CNN
-            </span>
-
-            <span class="status-online">
-                NumPy
-            </span>
-
-            <span class="status-online">
-                Pillow
-            </span>
-
-            <span class="status-online">
-                Streamlit
-            </span>
-
-        </div>
-
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    st.markdown("""
-    <div class="card">
-
-        <div class="section-title">
-            🚀 Project Workflow
-        </div>
-
-        <div style="
-            margin-top:18px;
-            line-height:2;
-        ">
-
-            <p style="color:#cbd5e1;">
-                <b style="color:#22d3ee;">01</b>
-                Dataset Collection
-            </p>
-
-            <p style="color:#cbd5e1;">
-                <b style="color:#22d3ee;">02</b>
-                Image Preprocessing
-            </p>
-
-            <p style="color:#cbd5e1;">
-                <b style="color:#22d3ee;">03</b>
-                Train / Validation Split
-            </p>
-
-            <p style="color:#cbd5e1;">
-                <b style="color:#22d3ee;">04</b>
-                CNN Model Training
-            </p>
-
-            <p style="color:#cbd5e1;">
-                <b style="color:#22d3ee;">05</b>
-                Model Evaluation
-            </p>
-
-            <p style="color:#cbd5e1;">
-                <b style="color:#22d3ee;">06</b>
-                Streamlit Deployment
-            </p>
-
-        </div>
-
-    </div>
-    """, unsafe_allow_html=True)
+    st.success(
+        "CNN-based Traffic Sign Classification system "
+        "with 43 classes and 96.44% test accuracy."
+    )
 
 
 # ============================================================
 # FOOTER
 # ============================================================
 
-st.markdown("""
-<div class="footer">
+st.divider()
 
-    <strong>TrafficSign AI</strong>
-    &nbsp; • &nbsp;
-    Deep Learning
-    &nbsp; • &nbsp;
-    CNN
-    &nbsp; • &nbsp;
-    Computer Vision
-    &nbsp; • &nbsp;
-    43 Classes
-
-    <br><br>
-
-    Final Year Project • Academic Showcase
-
-</div>
-""", unsafe_allow_html=True)
+st.caption(
+    "🚦 TrafficSign AI  •  Deep Learning  •  CNN  •  "
+    "Computer Vision  •  43 Classes  •  Academic Project"
+)
