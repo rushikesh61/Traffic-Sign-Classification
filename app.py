@@ -3,10 +3,9 @@ import tensorflow as tf
 import numpy as np
 from PIL import Image
 
-# ============================================================
+# =========================================================
 # PAGE CONFIG
-# ============================================================
-
+# =========================================================
 st.set_page_config(
     page_title="TrafficSign AI",
     page_icon="🚦",
@@ -14,406 +13,369 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ============================================================
-# MODEL
-# ============================================================
-
-MODEL_PATH = "traffic_sign_cnn_model.keras"
-
-CLASS_NAMES = {
-    0: "Speed Limit 20 km/h",
-    1: "Speed Limit 30 km/h",
-    2: "Speed Limit 50 km/h",
-    3: "Speed Limit 60 km/h",
-    4: "Speed Limit 70 km/h",
-    5: "Speed Limit 80 km/h",
-    6: "End of Speed Limit 80 km/h",
-    7: "Speed Limit 100 km/h",
-    8: "Speed Limit 120 km/h",
-    9: "No Passing",
-    10: "No Passing for Vehicles > 3.5 Tons",
-    11: "Right-of-Way at Intersection",
-    12: "Priority Road",
-    13: "Yield",
-    14: "Stop",
-    15: "No Vehicles",
-    16: "Vehicles > 3.5 Tons Prohibited",
-    17: "No Entry",
-    18: "General Caution",
-    19: "Dangerous Curve Left",
-    20: "Dangerous Curve Right",
-    21: "Double Curve",
-    22: "Bumpy Road",
-    23: "Slippery Road",
-    24: "Road Narrows on Right",
-    25: "Road Work",
-    26: "Traffic Signals",
-    27: "Pedestrians",
-    28: "Children Crossing",
-    29: "Bicycles Crossing",
-    30: "Beware of Ice/Snow",
-    31: "Wild Animals Crossing",
-    32: "End of All Speed & Passing Limits",
-    33: "Turn Right Ahead",
-    34: "Turn Left Ahead",
-    35: "Ahead Only",
-    36: "Go Straight or Right",
-    37: "Go Straight or Left",
-    38: "Keep Right",
-    39: "Keep Left",
-    40: "Roundabout Mandatory",
-    41: "End of No Passing",
-    42: "End of No Passing for Vehicles > 3.5 Tons"
-}
-
-# ============================================================
-# MODEL LOAD
-# ============================================================
-
-@st.cache_resource
-def load_model():
-    return tf.keras.models.load_model(MODEL_PATH)
-
-
-try:
-    model = load_model()
-    model_loaded = True
-except Exception as e:
-    model = None
-    model_loaded = False
-    model_error = str(e)
-
-
-# ============================================================
-# FUNCTIONS
-# ============================================================
-
-def preprocess_image(image):
-
-    image = image.convert("RGB")
-    image = image.resize((32, 32))
-
-    image_array = np.array(image).astype("float32")
-    image_array = image_array / 255.0
-
-    image_array = np.expand_dims(
-        image_array,
-        axis=0
-    )
-
-    return image_array
-
-
-def predict_image(image):
-
-    processed = preprocess_image(image)
-
-    prediction = model.predict(
-        processed,
-        verbose=0
-    )[0]
-
-    top_indices = np.argsort(prediction)[::-1][:3]
-
-    results = []
-
-    for index in top_indices:
-
-        results.append({
-            "id": int(index),
-            "name": CLASS_NAMES[int(index)],
-            "confidence": float(prediction[index])
-        })
-
-    return results
-
-
-def sign_icon(class_id):
-
-    if class_id in range(0, 9):
-        return "🔴"
-
-    if class_id in [13, 14]:
-        return "🛑"
-
-    if class_id == 17:
-        return "🚫"
-
-    if class_id in [
-        18, 19, 20, 21, 22,
-        23, 25, 27, 28, 29,
-        30, 31
-    ]:
-        return "⚠️"
-
-    if class_id in [
-        33, 34, 35, 36,
-        37, 38, 39, 40
-    ]:
-        return "🔵"
-
-    return "🚦"
-
-
-def driving_guidance(class_id):
-
-    guidance = {
-
-        0: "Reduce speed to 20 km/h.",
-        1: "Maintain a maximum speed of 30 km/h.",
-        2: "Maintain a maximum speed of 50 km/h.",
-        3: "Maintain a maximum speed of 60 km/h.",
-        4: "Maintain a maximum speed of 70 km/h.",
-        5: "Maintain a maximum speed of 80 km/h.",
-        6: "The 80 km/h restriction has ended.",
-        7: "Maintain a maximum speed of 100 km/h.",
-        8: "Maintain a maximum speed of 120 km/h.",
-        9: "Do not overtake other vehicles.",
-        10: "Heavy vehicles are not allowed to overtake.",
-        11: "Follow the right-of-way rules.",
-        12: "You are travelling on a priority road.",
-        13: "Slow down and give way.",
-        14: "Stop completely before proceeding.",
-        15: "Vehicles are prohibited in this area.",
-        16: "Vehicles over 3.5 tons are prohibited.",
-        17: "Entry is prohibited from this direction.",
-        18: "Drive carefully and watch for hazards.",
-        19: "Prepare for a dangerous curve to the left.",
-        20: "Prepare for a dangerous curve to the right.",
-        21: "Reduce speed before consecutive curves.",
-        22: "Drive carefully on the uneven road.",
-        23: "Reduce speed because the road may be slippery.",
-        24: "The road narrows on the right.",
-        25: "Road construction or maintenance is ahead.",
-        26: "Traffic signals are ahead.",
-        27: "Watch carefully for pedestrians.",
-        28: "Watch carefully for children crossing.",
-        29: "Watch carefully for bicycles.",
-        30: "Be alert for ice or snow.",
-        31: "Watch for wild animals crossing.",
-        32: "Previous speed and passing restrictions have ended.",
-        33: "Turn right ahead.",
-        34: "Turn left ahead.",
-        35: "Continue straight ahead.",
-        36: "You may go straight or turn right.",
-        37: "You may go straight or turn left.",
-        38: "Keep to the right.",
-        39: "Keep to the left.",
-        40: "Follow the roundabout direction.",
-        41: "The no-passing restriction has ended.",
-        42: "The heavy-vehicle no-passing restriction has ended."
+# =========================================================
+# CUSTOM CSS USING st.html()
+# =========================================================
+st.html("""
+<style>
+    .stApp {
+        background: linear-gradient(135deg, #07111f 0%, #0b1f35 45%, #06101c 100%);
+        color: #f1f5f9;
     }
 
-    return guidance.get(
-        class_id,
-        "Follow the road signs and drive carefully."
-    )
+    [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #081525 0%, #0d2238 100%);
+        border-right: 1px solid #1e4f73;
+    }
 
+    [data-testid="stSidebar"] * {
+        color: #e2e8f0 !important;
+    }
 
-# ============================================================
+    .hero {
+        padding: 28px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #0d2d4a, #0a1930);
+        border: 1px solid #1d638c;
+        box-shadow: 0 10px 35px rgba(0, 180, 255, 0.12);
+        margin-bottom: 25px;
+    }
+
+    .hero h1 {
+        font-size: 42px;
+        margin: 0;
+        color: #38bdf8;
+    }
+
+    .hero p {
+        color: #cbd5e1;
+        font-size: 17px;
+        margin-top: 8px;
+    }
+
+    .card {
+        padding: 22px;
+        border-radius: 18px;
+        background: rgba(15, 35, 55, 0.88);
+        border: 1px solid #245b7a;
+        margin-bottom: 18px;
+    }
+
+    .card-title {
+        font-size: 21px;
+        font-weight: 700;
+        color: #38bdf8;
+        margin-bottom: 8px;
+    }
+
+    .prediction {
+        padding: 25px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #092f46, #0b2034);
+        border: 2px solid #22d3ee;
+        box-shadow: 0 0 25px rgba(34, 211, 238, 0.12);
+        text-align: center;
+    }
+
+    .prediction h2 {
+        color: #67e8f9;
+        margin-bottom: 5px;
+    }
+
+    .confidence {
+        font-size: 34px;
+        font-weight: 800;
+        color: #38bdf8;
+    }
+
+    .instruction {
+        padding: 18px;
+        border-radius: 15px;
+        background: #102d42;
+        border-left: 5px solid #22d3ee;
+        margin-top: 15px;
+    }
+
+    .footer {
+        text-align: center;
+        color: #64748b;
+        padding: 30px 0 10px;
+    }
+
+    .camera-box {
+        padding: 18px;
+        border-radius: 15px;
+        background: #0c2438;
+        border: 1px solid #245b7a;
+    }
+
+    .small-text {
+        color: #94a3b8;
+        font-size: 14px;
+    }
+</style>
+""")
+
+# =========================================================
+# MODEL
+# =========================================================
+@st.cache_resource
+def load_model():
+    return tf.keras.models.load_model("traffic_sign_cnn_model.keras")
+
+model = load_model()
+
+# =========================================================
+# CLASS NAMES
+# =========================================================
+class_names = [
+    "Speed limit (20 km/h)",
+    "Speed limit (30 km/h)",
+    "Speed limit (50 km/h)",
+    "Speed limit (60 km/h)",
+    "Speed limit (70 km/h)",
+    "Speed limit (80 km/h)",
+    "End of speed limit (80 km/h)",
+    "Speed limit (100 km/h)",
+    "Speed limit (120 km/h)",
+    "No passing",
+    "No passing for vehicles over 3.5 tons",
+    "Right-of-way at intersection",
+    "Priority road",
+    "Yield",
+    "Stop",
+    "No vehicles",
+    "Vehicles over 3.5 tons prohibited",
+    "No entry",
+    "General caution",
+    "Dangerous curve left",
+    "Dangerous curve right",
+    "Double curve",
+    "Bumpy road",
+    "Slippery road",
+    "Road narrows on the right",
+    "Road work",
+    "Traffic signals",
+    "Pedestrians",
+    "Children crossing",
+    "Bicycles crossing",
+    "Beware of ice/snow",
+    "Wild animals crossing",
+    "End of all speed and passing limits",
+    "Turn right ahead",
+    "Turn left ahead",
+    "Ahead only",
+    "Go straight or right",
+    "Go straight or left",
+    "Keep right",
+    "Keep left",
+    "Roundabout mandatory",
+    "End of no passing",
+    "End of no passing by vehicles over 3.5 tons"
+]
+
+# =========================================================
+# DRIVING GUIDANCE
+# =========================================================
+guidance = {
+    "Stop": "Come to a complete stop before proceeding.",
+    "Yield": "Slow down and give priority to other road users.",
+    "No entry": "Do not enter this road or area.",
+    "Speed limit (20 km/h)": "Keep your speed at or below 20 km/h.",
+    "Speed limit (30 km/h)": "Keep your speed at or below 30 km/h.",
+    "Speed limit (50 km/h)": "Keep your speed at or below 50 km/h.",
+    "Speed limit (60 km/h)": "Keep your speed at or below 60 km/h.",
+    "Speed limit (70 km/h)": "Keep your speed at or below 70 km/h.",
+    "Speed limit (80 km/h)": "Keep your speed at or below 80 km/h.",
+    "Speed limit (100 km/h)": "Keep your speed at or below 100 km/h.",
+    "Speed limit (120 km/h)": "Keep your speed at or below 120 km/h.",
+    "No passing": "Overtaking is not allowed in this area.",
+    "Keep right": "Keep to the right side of the road.",
+    "Keep left": "Keep to the left side of the road.",
+    "Turn right ahead": "Prepare to turn right ahead.",
+    "Turn left ahead": "Prepare to turn left ahead.",
+    "Ahead only": "Continue straight ahead.",
+    "Roundabout mandatory": "Follow the roundabout direction.",
+    "Traffic signals": "Watch for traffic lights and follow their signals.",
+    "Road work": "Slow down and watch for road construction.",
+    "Pedestrians": "Watch carefully for pedestrians.",
+    "Children crossing": "Slow down and watch for children crossing.",
+    "Dangerous curve left": "Reduce speed and prepare for a left curve.",
+    "Dangerous curve right": "Reduce speed and prepare for a right curve.",
+    "Slippery road": "Drive carefully because the road may be slippery.",
+    "Beware of ice/snow": "Reduce speed and drive carefully in icy or snowy conditions.",
+    "Wild animals crossing": "Watch for animals crossing the road.",
+    "General caution": "Drive carefully and be alert to road conditions."
+}
+
+# =========================================================
 # SIDEBAR
-# ============================================================
-
+# =========================================================
 with st.sidebar:
-
-    st.title("🚦 TrafficSign AI")
-
-    st.caption("CNN CLASSIFICATION SYSTEM")
+    st.markdown("## 🚦 TrafficSign AI")
+    st.caption("CNN Based Traffic Sign Classification")
 
     st.divider()
 
-    st.subheader("Navigation")
-
     page = st.radio(
-        "Select Page",
+        "Navigation",
         [
             "🏠 Dashboard",
             "🔍 Predict Sign",
             "📊 Model Performance",
             "🚦 Sign Classes",
             "ℹ️ About Project"
-        ],
-        label_visibility="collapsed"
+        ]
     )
 
     st.divider()
-
-    if model_loaded:
-        st.success("● MODEL ONLINE")
-    else:
-        st.error("● MODEL ERROR")
-
-    st.divider()
-
-    st.caption("SYSTEM INFO")
-
-    st.write("⚙️ TensorFlow")
-    st.write("🧠 Keras CNN")
-    st.write("🖼️ Input: 32 × 32 RGB")
-    st.write("🚦 Classes: 43")
-
-
-# ============================================================
-# DASHBOARD
-# ============================================================
-
-if page == "🏠 Dashboard":
-
-    st.title("🚦 Traffic Sign Classification AI")
-
-    st.subheader(
-        "Deep Learning • Computer Vision • CNN"
-    )
 
     st.info(
-        "An intelligent image classification system that "
-        "recognizes traffic signs using a Convolutional Neural Network."
+        "AI Model: Custom CNN\n\n"
+        "Classes: 43\n"
+        "Test Accuracy: 96.44%"
     )
 
-    st.divider()
+# =========================================================
+# DASHBOARD
+# =========================================================
+if page == "🏠 Dashboard":
 
-    st.header("📊 Project Overview")
+    st.html("""
+    <div class="hero">
+        <h1>🚦 TrafficSign AI</h1>
+        <p>Intelligent Traffic Sign Classification using Convolutional Neural Networks</p>
+    </div>
+    """)
+
+    st.subheader("Project Overview")
 
     c1, c2, c3, c4 = st.columns(4)
 
     with c1:
-        st.metric(
-            "Traffic Classes",
-            "43",
-            "Categories"
-        )
+        st.metric("Traffic Classes", "43")
 
     with c2:
-        st.metric(
-            "Training Images",
-            "39,209",
-            "Images"
-        )
+        st.metric("Training Images", "39,209")
 
     with c3:
-        st.metric(
-            "Test Images",
-            "12,630",
-            "Images"
-        )
+        st.metric("Test Images", "12,630")
 
     with c4:
-        st.metric(
-            "Test Accuracy",
-            "96.44%",
-            "CNN"
-        )
+        st.metric("Test Accuracy", "96.44%")
 
     st.divider()
 
-    st.header("🧠 CNN Architecture")
+    st.subheader("🧠 CNN Architecture")
 
-    a1, a2, a3, a4, a5 = st.columns(5)
+    cols = st.columns(5)
 
-    with a1:
-        st.info("🖼️ INPUT\n\n32 × 32 × 3")
+    architecture = [
+        ("1", "Conv2D", "32 Filters"),
+        ("2", "Conv2D", "64 Filters"),
+        ("3", "Conv2D", "128 Filters"),
+        ("4", "Dense", "128 Neurons"),
+        ("5", "Output", "43 Classes")
+    ]
 
-    with a2:
-        st.info("🧩 CONVOLUTION\n\n32 Filters")
-
-    with a3:
-        st.info("🧠 CONVOLUTION\n\n64 + 128 Filters")
-
-    with a4:
-        st.info("🔄 DENSE\n\n128 Neurons")
-
-    with a5:
-        st.success("🚦 OUTPUT\n\n43 Classes")
+    for col, item in zip(cols, architecture):
+        with col:
+            st.info(f"**Layer {item[0]}**\n\n{item[1]}\n\n{item[2]}")
 
     st.divider()
 
-    left, right = st.columns(2)
+    st.subheader("✨ Main Features")
 
-    with left:
+    f1, f2, f3 = st.columns(3)
 
-        st.subheader("🎯 Project Objective")
+    with f1:
+        st.success("📷 Camera Prediction\n\nCapture a traffic sign directly using your camera.")
 
-        st.write(
-            "The objective of this project is to automatically "
-            "recognize and classify road traffic signs from images "
-            "using a Convolutional Neural Network."
-        )
+    with f2:
+        st.success("📁 Image Upload\n\nUpload JPG, JPEG or PNG traffic sign images.")
 
-        st.write(
-            "The CNN learns visual patterns such as shape, color, "
-            "symbols and structures from traffic-sign images."
-        )
+    with f3:
+        st.success("📊 Smart Analysis\n\nGet prediction confidence and top 3 results.")
 
-    with right:
-
-        st.subheader("⚡ System Status")
-
-        if model_loaded:
-
-            st.success(
-                "Model is loaded and ready for prediction."
-            )
-
-        else:
-
-            st.error(
-                "Model could not be loaded."
-            )
-
-    st.divider()
-
-    st.subheader("🚀 Quick Start")
-
-    st.write(
-        "Go to **Predict Sign** from the sidebar and upload "
-        "a traffic-sign image."
-    )
-
-
-# ============================================================
-# PREDICTION
-# ============================================================
-
+# =========================================================
+# PREDICT SIGN
+# =========================================================
 elif page == "🔍 Predict Sign":
 
-    st.title("🔍 Traffic Sign Prediction")
+    st.html("""
+    <div class="hero">
+        <h1>🔍 Predict Traffic Sign</h1>
+        <p>Capture an image or upload a traffic sign and let the CNN model classify it.</p>
+    </div>
+    """)
 
-    st.write(
-        "Upload an image and let the trained CNN identify "
-        "the traffic-sign category."
+    st.subheader("📥 Choose Input Method")
+
+    input_method = st.radio(
+        "Select how you want to provide the image:",
+        ["📷 Open Camera", "📁 Upload File"],
+        horizontal=True
     )
 
-    st.divider()
+    image = None
 
-    if not model_loaded:
+    # -----------------------------------------------------
+    # CAMERA
+    # -----------------------------------------------------
+    if input_method == "📷 Open Camera":
 
-        st.error(
-            "Model could not be loaded."
+        st.html("""
+        <div class="camera-box">
+            <b>📷 Camera Mode</b><br>
+            <span class="small-text">
+            Allow camera permission and capture a clear traffic sign.
+            </span>
+        </div>
+        """)
+
+        camera_image = st.camera_input(
+            "Take a picture of the traffic sign"
         )
 
-        st.code(model_error)
+        if camera_image is not None:
+            image = Image.open(camera_image).convert("RGB")
 
+    # -----------------------------------------------------
+    # UPLOAD
+    # -----------------------------------------------------
     else:
 
-        left, right = st.columns(
-            [1, 1],
-            gap="large"
+        uploaded_file = st.file_uploader(
+            "Upload Traffic Sign Image",
+            type=["jpg", "jpeg", "png"],
+            help="Upload a clear image containing a traffic sign."
         )
+
+        if uploaded_file is not None:
+            image = Image.open(uploaded_file).convert("RGB")
+
+    # -----------------------------------------------------
+    # PREDICTION
+    # -----------------------------------------------------
+    if image is not None:
+
+        st.divider()
+
+        left, right = st.columns([1, 1.25])
 
         with left:
 
-            st.subheader("📤 Upload Image")
+            st.subheader("🖼️ Image Preview")
 
-            uploaded_file = st.file_uploader(
-                "Choose a traffic sign image",
-                type=[
-                    "jpg",
-                    "jpeg",
-                    "png"
-                ]
+            st.image(
+                image,
+                caption="Input Traffic Sign",
+                use_container_width=True
             )
 
-            st.divider()
+        with right:
+
+            st.subheader("⚙️ Prediction Settings")
 
             threshold = st.slider(
                 "Confidence Threshold",
@@ -423,369 +385,298 @@ elif page == "🔍 Predict Sign":
                 step=0.01
             )
 
-        if uploaded_file is not None:
+            st.caption(
+                f"Prediction will be marked reliable when confidence is ≥ {threshold:.0%}"
+            )
 
-            image = Image.open(
-                uploaded_file
-            ).convert("RGB")
+            if st.button(
+                "🚀 Predict Traffic Sign",
+                type="primary",
+                use_container_width=True
+            ):
 
-            with left:
+                # Resize and normalize
+                img = image.resize((32, 32))
 
-                st.image(
-                    image,
-                    caption="Uploaded Image",
-                    use_container_width=True
-                )
+                img_array = np.array(img) / 255.0
+                img_array = np.expand_dims(img_array, axis=0)
 
-            results = predict_image(image)
+                # Prediction
+                predictions = model.predict(
+                    img_array,
+                    verbose=0
+                )[0]
 
-            best = results[0]
+                # Top prediction
+                top_indices = np.argsort(predictions)[::-1][:3]
 
-            with right:
+                predicted_index = top_indices[0]
+                predicted_name = class_names[predicted_index]
+                confidence = float(predictions[predicted_index])
 
-                st.subheader("🤖 AI Prediction")
+                st.session_state["prediction_done"] = True
+                st.session_state["predicted_name"] = predicted_name
+                st.session_state["confidence"] = confidence
+                st.session_state["top_indices"] = top_indices
+                st.session_state["predictions"] = predictions
 
-                st.metric(
-                    "Predicted Sign",
-                    best["name"]
-                )
+        # -------------------------------------------------
+        # RESULT
+        # -------------------------------------------------
+        if st.session_state.get("prediction_done", False):
 
-                st.metric(
-                    "Confidence",
-                    f"{best['confidence'] * 100:.2f}%"
-                )
-
-                if best["confidence"] >= threshold:
-
-                    st.success(
-                        "✓ High-confidence prediction"
-                    )
-
-                else:
-
-                    st.warning(
-                        "⚠ Low-confidence prediction"
-                    )
-
-                st.divider()
-
-                st.subheader("💡 Driving Guidance")
-
-                st.info(
-                    driving_guidance(
-                        best["id"]
-                    )
-                )
+            predicted_name = st.session_state["predicted_name"]
+            confidence = st.session_state["confidence"]
+            top_indices = st.session_state["top_indices"]
+            predictions = st.session_state["predictions"]
 
             st.divider()
 
-            st.header("📊 Top 3 Predictions")
+            st.subheader("🎯 Prediction Result")
 
-            for rank, result in enumerate(
-                results,
-                start=1
-            ):
+            r1, r2 = st.columns([1.5, 1])
 
-                col1, col2, col3 = st.columns(
-                    [0.10, 0.65, 0.25]
-                )
+            with r1:
 
-                with col1:
+                st.html(f"""
+                <div class="prediction">
+                    <h2>🚦 {predicted_name}</h2>
+                    <div class="confidence">{confidence:.2%}</div>
+                    <p>Model Confidence</p>
+                </div>
+                """)
 
-                    st.subheader(
-                        f"#{rank}"
+            with r2:
+
+                if confidence >= threshold:
+                    st.success(
+                        f"✅ High Confidence\n\n"
+                        f"The model is confident about this prediction."
+                    )
+                else:
+                    st.warning(
+                        f"⚠️ Low Confidence\n\n"
+                        f"Try a clearer or closer image."
                     )
 
-                with col2:
+            # -------------------------------------------------
+            # DRIVING GUIDANCE
+            # -------------------------------------------------
+            st.subheader("🚘 Driving Guidance")
 
-                    st.write(
-                        f"{sign_icon(result['id'])} "
-                        f"**{result['name']}**"
-                    )
+            instruction = guidance.get(
+                predicted_name,
+                "Follow the traffic rules associated with this sign."
+            )
 
+            st.html(f"""
+            <div class="instruction">
+                <b>💡 Recommended Action</b><br><br>
+                {instruction}
+            </div>
+            """)
+
+            # -------------------------------------------------
+            # TOP 3
+            # -------------------------------------------------
+            st.divider()
+
+            st.subheader("🏆 Top 3 Predictions")
+
+            for rank, idx in enumerate(top_indices, start=1):
+
+                name = class_names[idx]
+                score = float(predictions[idx])
+
+                c1, c2 = st.columns([2, 4])
+
+                with c1:
+                    st.write(f"**#{rank}  {name}**")
+
+                with c2:
                     st.progress(
-                        result["confidence"]
+                        min(score, 1.0),
+                        text=f"{score:.2%}"
                     )
 
-                with col3:
+            # -------------------------------------------------
+            # RESET
+            # -------------------------------------------------
+            st.divider()
 
-                    st.write(
-                        f"**{result['confidence'] * 100:.2f}%**"
-                    )
+            if st.button(
+                "🔄 Clear Prediction",
+                use_container_width=True
+            ):
+                st.session_state["prediction_done"] = False
+                st.rerun()
 
-        else:
+    else:
 
-            st.info(
-                "📷 Upload an image to start prediction."
-            )
+        st.info(
+            "👆 Select **Open Camera** or **Upload File** above to start prediction."
+        )
 
-            st.write(
-                "Supported formats: JPG, JPEG, PNG"
-            )
-
-
-# ============================================================
+# =========================================================
 # MODEL PERFORMANCE
-# ============================================================
-
+# =========================================================
 elif page == "📊 Model Performance":
 
-    st.title("📊 Model Performance")
+    st.html("""
+    <div class="hero">
+        <h1>📊 Model Performance</h1>
+        <p>Evaluation results of the trained CNN model.</p>
+    </div>
+    """)
 
-    st.write(
-        "Performance of the CNN model on the independent test dataset."
-    )
-
-    st.divider()
+    st.subheader("📈 Test Results")
 
     c1, c2, c3, c4 = st.columns(4)
 
     with c1:
-
-        st.metric(
-            "Test Accuracy",
-            "96.44%"
-        )
+        st.metric("Accuracy", "96.44%")
 
     with c2:
-
-        st.metric(
-            "Test Error",
-            "3.56%"
-        )
+        st.metric("Error Rate", "3.56%")
 
     with c3:
-
-        st.metric(
-            "Macro F1",
-            "94.41%"
-        )
+        st.metric("Macro F1", "94.41%")
 
     with c4:
-
-        st.metric(
-            "Weighted F1",
-            "96.41%"
-        )
+        st.metric("Weighted F1", "96.41%")
 
     st.divider()
 
-    st.header("🧠 Model Configuration")
+    st.subheader("⚙️ Model Configuration")
 
-    config1, config2 = st.columns(2)
-
-    with config1:
-
-        st.write("**Architecture:** CNN")
-        st.write("**Input Shape:** 32 × 32 × 3")
-        st.write("**Output Classes:** 43")
-        st.write("**Optimizer:** Adam")
-
-    with config2:
-
-        st.write(
-            "**Loss:** Sparse Categorical Crossentropy"
-        )
-
-        st.write("**Epochs:** 15")
-
-        st.write("**Batch Size:** 64")
-
-        st.write(
-            "**Activation:** ReLU + Softmax"
-        )
-
-    st.divider()
-
-    st.header("📈 Test Dataset Results")
-
-    st.write(
-        "Total Test Images: **12,630**"
+    st.info(
+        """
+        **Input Size:** 32 × 32 × 3  
+        **Architecture:** Convolutional Neural Network  
+        **Optimizer:** Adam  
+        **Loss:** Sparse Categorical Crossentropy  
+        **Epochs:** 15  
+        **Batch Size:** 64  
+        **Classes:** 43
+        """
     )
 
-    st.write(
-        "Correct Predictions: **12,180**"
-    )
-
-    st.write(
-        "Incorrect Predictions: **450**"
-    )
-
-    st.progress(
-        0.9644,
-        text="Test Accuracy — 96.44%"
-    )
-
-    st.divider()
-
-    st.header("🔬 CNN Processing Pipeline")
+    st.subheader("🔄 Processing Pipeline")
 
     p1, p2, p3, p4, p5 = st.columns(5)
 
     with p1:
-        st.info("🖼️ Image\n\nInput")
+        st.info("📷 Image")
 
     with p2:
-        st.info("🧩 Conv2D\n\nFeature Extraction")
+        st.info("📐 Resize")
 
     with p3:
-        st.info("🔄 Pooling\n\nDownsampling")
+        st.info("⚖️ Normalize")
 
     with p4:
-        st.info("🧠 Dense\n\nClassification")
+        st.info("🧠 CNN")
 
     with p5:
-        st.success("🚦 Softmax\n\nPrediction")
+        st.info("🎯 Prediction")
 
-
-# ============================================================
+# =========================================================
 # SIGN CLASSES
-# ============================================================
-
+# =========================================================
 elif page == "🚦 Sign Classes":
 
-    st.title("🚦 Traffic Sign Classes")
-
-    st.write(
-        "The CNN model recognizes 43 traffic-sign categories."
-    )
+    st.html("""
+    <div class="hero">
+        <h1>🚦 Traffic Sign Classes</h1>
+        <p>Explore all 43 traffic sign categories recognized by the CNN model.</p>
+    </div>
+    """)
 
     search = st.text_input(
-        "🔎 Search class",
-        placeholder="Try: speed, road, stop, curve..."
+        "🔎 Search Traffic Sign",
+        placeholder="Example: speed, stop, curve, road..."
     )
 
-    st.divider()
+    filtered_classes = [
+        (i, name)
+        for i, name in enumerate(class_names)
+        if search.lower() in name.lower()
+    ]
 
-    filtered_classes = []
+    st.write(
+        f"Showing **{len(filtered_classes)}** of **{len(class_names)}** classes"
+    )
 
-    for class_id, name in CLASS_NAMES.items():
+    for idx, name in filtered_classes:
 
-        if search.lower() in name.lower():
+        col1, col2 = st.columns([1, 5])
 
-            filtered_classes.append(
-                (class_id, name)
-            )
+        with col1:
+            st.info(f"Class {idx}")
 
-    if not filtered_classes:
+        with col2:
+            st.write(f"🚦 **{name}**")
 
-        st.warning(
-            "No matching class found."
-        )
-
-    else:
-
-        for start in range(
-            0,
-            len(filtered_classes),
-            3
-        ):
-
-            row = filtered_classes[
-                start:start + 3
-            ]
-
-            cols = st.columns(3)
-
-            for col, item in zip(
-                cols,
-                row
-            ):
-
-                class_id, name = item
-
-                with col:
-
-                    st.info(
-                        f"{sign_icon(class_id)} "
-                        f"**Class {class_id}**\n\n"
-                        f"{name}"
-                    )
-
-
-# ============================================================
+# =========================================================
 # ABOUT
-# ============================================================
-
+# =========================================================
 elif page == "ℹ️ About Project":
 
-    st.title("ℹ️ About TrafficSign AI")
+    st.html("""
+    <div class="hero">
+        <h1>ℹ️ About TrafficSign AI</h1>
+        <p>A Deep Learning based traffic sign classification system.</p>
+    </div>
+    """)
 
-    st.subheader(
-        "Final Year Deep Learning Project"
-    )
-
-    st.divider()
-
-    st.header("🎯 Problem Statement")
-
-    st.write(
-        "Traffic signs provide important information to drivers "
-        "and intelligent transportation systems. Automatic "
-        "recognition of these signs can help computer vision "
-        "systems understand road environments."
-    )
-
-    st.divider()
-
-    st.header("💡 Proposed Solution")
+    st.subheader("🎓 Project Objective")
 
     st.write(
-        "This project uses a Convolutional Neural Network to "
-        "classify traffic-sign images into 43 different categories."
+        """
+        The objective of this project is to develop a Deep Learning model
+        that can automatically recognize and classify traffic signs from
+        images.
+        """
     )
+
+    st.subheader("🧠 Technology Stack")
+
+    t1, t2, t3, t4 = st.columns(4)
+
+    with t1:
+        st.info("Python")
+
+    with t2:
+        st.info("TensorFlow")
+
+    with t3:
+        st.info("CNN")
+
+    with t4:
+        st.info("Streamlit")
+
+    st.subheader("📊 Dataset")
 
     st.write(
-        "The input image is resized to 32 × 32 pixels and normalized "
-        "before being passed through the trained CNN."
+        """
+        The model is trained on a traffic sign dataset containing
+        **43 different traffic sign classes**.
+        """
     )
 
-    st.divider()
-
-    st.header("🛠️ Technologies")
-
-    tech1, tech2, tech3, tech4 = st.columns(4)
-
-    with tech1:
-        st.success("🐍 Python")
-
-    with tech2:
-        st.success("🧠 TensorFlow")
-
-    with tech3:
-        st.success("🔬 Keras")
-
-    with tech4:
-        st.success("🌐 Streamlit")
-
-    st.divider()
-
-    st.header("🚀 Project Workflow")
-
-    st.write("1️⃣ Dataset Collection")
-    st.write("2️⃣ Image Preprocessing")
-    st.write("3️⃣ Train / Validation Split")
-    st.write("4️⃣ CNN Model Training")
-    st.write("5️⃣ Model Evaluation")
-    st.write("6️⃣ Streamlit Deployment")
-
-    st.divider()
-
-    st.header("📌 Project Summary")
+    st.subheader("🚀 Deployment")
 
     st.success(
-        "CNN-based Traffic Sign Classification system "
-        "with 43 classes and 96.44% test accuracy."
+        "This application provides real-time image-based traffic sign prediction "
+        "through camera capture and image upload."
     )
 
-
-# ============================================================
+# =========================================================
 # FOOTER
-# ============================================================
-
-st.divider()
+# =========================================================
+st.markdown("---")
 
 st.caption(
-    "🚦 TrafficSign AI  •  Deep Learning  •  CNN  •  "
-    "Computer Vision  •  43 Classes  •  Academic Project"
+    "🚦 TrafficSign AI | CNN Based Traffic Sign Classification | "
+    "Deep Learning Final Year Project"
 )
